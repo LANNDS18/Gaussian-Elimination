@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "time.h"
+#include <omp.h>
 #define MAX_MATRIX 1000
 
 int N = MAX_MATRIX;
@@ -37,25 +37,16 @@ void generateMatrix();
 
 int checkEquation();
 
-
 int main() {
+    double starts=omp_get_wtime();
+
     generateMatrix();
-
-    clock_t start, end;
-    start = clock();
-
-
     forwardElimination();
     backwardElimination();
 
     int matrixStatus = checkEquation();
-
-    end = clock();
-    double use_seconds = (double)(end - start) / CLOCKS_PER_SEC;
-
-    if (DEBUG) {
-        displayMatrices();
-    }
+    double ends=omp_get_wtime();
+    double duration = ends - starts;
 
     if (matrixStatus == 0){
         printf("The eliminated matrix is not consistent.\n");
@@ -68,7 +59,7 @@ int main() {
     }
 
     printf("------------------------------------\n");
-    printf("Elapsed time: %lf s.\n", use_seconds);
+    printf("Elapsed time: %lf s.\n", duration);
     printf("------------------------------------\n");
 }
 
@@ -89,7 +80,6 @@ int checkEquation() {
     return 1;
 }
 
-
 void forwardElimination(){
 
     float ratio;
@@ -97,6 +87,7 @@ void forwardElimination(){
 
     /* Current Row for computing ratio*/
     for (i = 0; i < N - 1; i++) {
+    #pragma omp parallel for num_threads(8) schedule(guided) private(j, k, ratio)
         for (j = i + 1; j < N; j++) {
             ratio = A[j][i] / A[i][i];
             /* Columns of j are scaled by ratio */
@@ -125,8 +116,10 @@ void generateMatrix() {
     int i, j;
     for (i = 0; i < N; i++) {
         for (j = 0; j < N; j++) {
-             A[i][j] = rand() % 800;
+            A[i][j] = rand() % 800;
         }
         B[i] = rand() % 10;
     }
+
+
 }

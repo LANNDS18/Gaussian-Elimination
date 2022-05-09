@@ -12,4 +12,6 @@ if(OpenMP_CXX_FOUND)
     target_link_libraries(mpi_test_set PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
-add_executable(mpi_test_set baseline.c)
+add_executable(base baseline.c)
+add_executable(mpi mpi.c)
+add_executable(omp omp.c)
