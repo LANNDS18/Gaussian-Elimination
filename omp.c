@@ -7,35 +7,10 @@ int N = MAX_MATRIX;
 int DEBUG = 0;
 float A[MAX_MATRIX][MAX_MATRIX], B[MAX_MATRIX], X[MAX_MATRIX];
 
-void displayMatrices() {
-    printf("------------------------------------\n");
-    printf("Show Matrix: A\n");
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            printf("%f ", A[i][j]);
-        }
-        printf("\n");
-    }
-    printf("------------------------------------\n");
-    printf("Show Matrix: B\n");
-    for (int i = 0; i < N; i++) {
-        printf("%f\t", B[i]);
-    }
-    printf("\n------------------------------------\n");
-    printf("Show Result: X\n");
-    for (int i = 0; i < N; i++) {
-        printf("%f\t", X[i]);
-    }
-    printf("\n");
-}
-
+void displayMatrices();
 void forwardElimination();
-
 void backwardElimination();
-
 void generateMatrix();
-
-int checkEquation();
 
 int main() {
     double starts=omp_get_wtime();
@@ -44,26 +19,10 @@ int main() {
     forwardElimination();
     backwardElimination();
 
-    int matrixStatus = checkEquation();
     double ends=omp_get_wtime();
-    double duration = ends - starts;
+    double elapsed = ends - starts;
 
-    if (matrixStatus == 0){
-        printf("The eliminated matrix is not consistent.\n");
-    }
-    else if (matrixStatus < 0) {
-        printf("The eliminated matrix has infinity result\n");
-    }
-    else {
-        printf("Finishing elimination.\n");
-    }
-
-    printf("------------------------------------\n");
-    printf("Elapsed time: %lf s.\n", duration);
-    printf("------------------------------------\n");
-}
-
-int checkEquation() {
+    printf("----Gaussian Elimination in OMP-----\n");
     int i, j;
     for (i = 0; i < N; i++) {
         float consistFlag = 0;
@@ -71,20 +30,28 @@ int checkEquation() {
             if (A[i][j] != 0.0) consistFlag = 1;
         }
         if (consistFlag == 0 && B[i] != 0) {
-            return 0;
+            printf("The eliminated matrix is not consistent.\n");
+            break;
         }
-        if (consistFlag == 0 && B[i] == 0){
-            return -1;
+        else if (consistFlag == 0 && B[i] == 0){
+            printf("The eliminated matrix has infinity result\n");
+            break;
+        }
+        else {
+            if (i == N - 1) {
+                printf("The eliminated matrix is consistent.\n");
+            }
         }
     }
-    return 1;
+    printf("------------------------------------\n");
+    printf("Elapsed time: %lf s.\n", elapsed);
+    printf("------------------------------------\n");
 }
 
-void forwardElimination(){
 
+void forwardElimination(){
     float ratio;
     int i, j, k;
-
     /* Current Row for computing ratio*/
     for (i = 0; i < N - 1; i++) {
     #pragma omp parallel for num_threads(8) schedule(guided) private(j, k, ratio)
@@ -99,7 +66,6 @@ void forwardElimination(){
         }
     }
 }
-
 
 void backwardElimination() {
     int i, j;
@@ -120,6 +86,26 @@ void generateMatrix() {
         }
         B[i] = rand() % 10;
     }
+}
 
-
+void displayMatrices() {
+    printf("------------------------------------\n");
+    printf("Show Matrix: A\n");
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%f ", A[i][j]);
+        }
+        printf("\n");
+    }
+    printf("------------------------------------\n");
+    printf("Show Matrix: B\n");
+    for (int i = 0; i < N; i++) {
+        printf("%f\t", B[i]);
+    }
+    printf("\n------------------------------------\n");
+    printf("Show Result: X\n");
+    for (int i = 0; i < N; i++) {
+        printf("%f\t", X[i]);
+    }
+    printf("\n");
 }

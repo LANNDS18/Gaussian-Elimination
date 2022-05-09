@@ -14,4 +14,7 @@ endif()
 
 add_executable(base baseline.c)
 add_executable(mpi mpi.c)
+#/*
+#gcc -Xpreprocessor -fopenmp omp.c -lomp -o omp
+#*/
 add_executable(omp omp.c)
