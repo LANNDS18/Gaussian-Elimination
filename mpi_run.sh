@@ -19,7 +19,7 @@ module load mpi/intel-mpi/2019u5/bin
 ## SLURM terms
 echo "Node list                    : $SLURM_JOB_NODELIST"
 echo "Number of nodes allocated    : $SLURM_JOB_NUM_NODES or $SLURM_NNODES"
-echo "Number of threads or processes          : $SLURM_NTASKS"
+echo "Number of processes          : $SLURM_NTASKS"
 echo "Number of processes per node : $SLURM_TASKS_PER_NODE"
 echo "Requested tasks per node     : $SLURM_NTASKS_PER_NODE"
 echo "Requested CPUs per task      : $SLURM_CPUS_PER_TASK"
