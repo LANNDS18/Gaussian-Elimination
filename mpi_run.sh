@@ -37,7 +37,7 @@ export numMPI=${SLURM_NTASKS:-1} # if '-n' not used then default to 1
 
 echo
 echo
-mpiicc -O0 $SRC -o $EXE
+mpiicc -O0 $SRC -o $EXE -lm
 echo
 echo
 
@@ -48,11 +48,11 @@ if test -x $EXE; then
           do
             size=$((200*$i))
             echo
-            echo This is running process $i
+            echo Process $i
             echo The size of the matrix is $size
-            mpirun -np ${numMPI} ./${EXE} $size
+            mpirun -np ${numMPI} ./${EXE} $size;
             echo
-            #mpirun -np 16 ./mpi.exe 100;
+            echo
       done
 else
      echo $SRC did not built to $EXE
