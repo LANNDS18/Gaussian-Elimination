@@ -3,7 +3,7 @@
 #include "time.h"
 #define MAX_MATRIX 1000
 
-int N = MAX_MATRIX;
+int N = 10;
 int DEBUG = 0;
 float A[MAX_MATRIX][MAX_MATRIX], B[MAX_MATRIX], X[MAX_MATRIX];
 

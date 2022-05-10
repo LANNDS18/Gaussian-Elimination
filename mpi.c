@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mpi.h"
-#define MAX_MATRIX 1000
+#define MAX_MATRIX 2000
 
-int N = MAX_MATRIX;
+int N = 10;
 int DEBUG = 0;
 float A[MAX_MATRIX][MAX_MATRIX], B[MAX_MATRIX];
 float X[MAX_MATRIX];
@@ -11,21 +11,46 @@ int size, rank;
 double commTime = 0, computationTime = 0;
 
 void generateMatrix();
+
 void forwardStep(int, int);
+
 void forwardElimination();
+
 void backwardElimination();
+
 void displayMatrices();
 
-int main() {
-    double start, finish, loc_elapsed, elapsed, maxCommTime, maxCompTime;
 
+void Get_input(int argc, char *argv[]){
+    if (rank == 0) {
+        if (argc!= 2){
+            fprintf(stderr, "Usage: mpirun -np <num_procs> %s <size of matrices>\n", argv[0]);
+            fflush(stderr);
+            N = -1;
+        } else {
+            N = atoi(argv[1]);
+        }
+    }
+    // Broadcasts value of n to each process
+    MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+    // negative n ends the program
+    if (N <= 0) {
+        MPI_Finalize();
+        exit(-1);
+    }
+}
+
+int main(int argc, char *argv[])  {
+
+    double start, finish, loc_elapsed, elapsed, maxCommTime, maxCompTime;
     start = MPI_Wtime();
 
     MPI_Init(NULL, NULL);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    Get_input(argc, argv);
     MPI_Barrier(MPI_COMM_WORLD);
-
     generateMatrix();
     forwardElimination();
     backwardElimination();

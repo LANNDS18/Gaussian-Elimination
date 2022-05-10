@@ -3,18 +3,33 @@
 #include <omp.h>
 #define MAX_MATRIX 1000
 
-int N = MAX_MATRIX;
+int N = 100;
+int n_threads;
 int DEBUG = 0;
 float A[MAX_MATRIX][MAX_MATRIX], B[MAX_MATRIX], X[MAX_MATRIX];
 
 void displayMatrices();
+
 void forwardElimination();
+
 void backwardElimination();
+
 void generateMatrix();
 
-int main() {
-    double starts=omp_get_wtime();
+void Get_input(int argc, char *argv[]){
+    if (argc!= 2){
+        printf("Usage: OMP_NUM_THREADS=4 %s <size of matrices>\n", argv[0]);
+        N = -1;
+    } else {
+        N = atoi(argv[1]);
+    } if (N <= 0) {
+        exit(-1);
+    }
+}
 
+int main(int argc, char *argv[]) {
+    double starts=omp_get_wtime();
+    Get_input(argc, argv);
     generateMatrix();
     forwardElimination();
     backwardElimination();
@@ -45,24 +60,29 @@ int main() {
     }
     printf("------------------------------------\n");
     printf("Elapsed time: %lf s.\n", elapsed);
+    printf("Number of threads: %d\n", n_threads);
     printf("------------------------------------\n");
 }
 
 
 void forwardElimination(){
+
     float ratio;
     int i, j, k;
     /* Current Row for computing ratio*/
     for (i = 0; i < N - 1; i++) {
-    #pragma omp parallel for num_threads(8) schedule(guided) private(j, k, ratio)
-        for (j = i + 1; j < N; j++) {
-            ratio = A[j][i] / A[i][i];
-            /* Columns of j are scaled by ratio */
-            for (k = i; k < N; k++) {
-                A[j][k] -= ratio * A[i][k];
+        #pragma omp parallel private(j, k, ratio)
+        {
+            n_threads = omp_get_num_threads();
+            #pragma omp for schedule(guided)
+            for (j = i + 1; j < N; j++) {
+                ratio = A[j][i] / A[i][i];
+                /* Columns of j are scaled by ratio */
+                for (k = i; k < N; k++) {
+                    A[j][k] -= ratio * A[i][k];
+                }
+                B[j] -= ratio * B[i];
             }
-            B[j] -= ratio * B[i];
-            // printf("cpu: %d\n", omp_get_thread_num());
         }
     }
 }
