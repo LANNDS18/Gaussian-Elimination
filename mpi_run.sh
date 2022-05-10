@@ -44,17 +44,16 @@ echo
 
 
 if test -x $EXE; then
-      # run multiple times
-      for k in $(seq 2 $numMPI);
-        do
-          for i in {1..5};
-            do
-              size=$((200*$i))
-              echo "Run with $k core"
-              echo "The size of the matrix is $size"
-              mpirun -np ${k} ./${EXE};
-            done
-        done
+      for i in {1..5};
+          do
+            size=$((200*$i))
+            echo
+            echo This is running process $i
+            echo The size of the matrix is $size
+            mpirun -np ${numMPI} ./${EXE} $size
+            echo
+            #mpirun -np 16 ./mpi.exe 100;
+      done
 else
      echo $SRC did not built to $EXE
 fi
