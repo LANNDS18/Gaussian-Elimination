@@ -1,3 +1,4 @@
+// sbatch --exclusive -t Time -c NCores ./omp_run.sh omp.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
