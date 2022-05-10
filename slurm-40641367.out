@@ -1,0 +1,72 @@
+Node list                    : node060
+Number of nodes allocated    : 1 or 1
+Number of processes          : 4
+Number of processes per node : 4
+Requested tasks per node     : 
+Requested CPUs per task      : 
+Scheduling priority          : 0
+compiling mpi.c to mpi.exe
+
+
+
+
+
+Process 1
+The size of the matrix is 200
+----Gaussian Elimination in MPI-----
+The eliminated matrix is consistent.
+------------------------------------
+Elapsed time: 0.040668 s.
+Communication time: 0.032775 s.
+Computation time: 0.003658 s.
+------------------------------------
+
+
+
+Process 2
+The size of the matrix is 400
+----Gaussian Elimination in MPI-----
+The eliminated matrix is consistent.
+------------------------------------
+Elapsed time: 0.164862 s.
+Communication time: 0.130810 s.
+Computation time: 0.021963 s.
+------------------------------------
+
+
+
+Process 3
+The size of the matrix is 600
+----Gaussian Elimination in MPI-----
+The eliminated matrix is consistent.
+------------------------------------
+Elapsed time: 0.413739 s.
+Communication time: 0.331687 s.
+Computation time: 0.060641 s.
+------------------------------------
+
+
+
+Process 4
+The size of the matrix is 800
+----Gaussian Elimination in MPI-----
+The eliminated matrix is consistent.
+------------------------------------
+Elapsed time: 0.851623 s.
+Communication time: 0.671653 s.
+Computation time: 0.136859 s.
+------------------------------------
+
+
+
+Process 5
+The size of the matrix is 1000
+----Gaussian Elimination in MPI-----
+The eliminated matrix is consistent.
+------------------------------------
+Elapsed time: 1.522455 s.
+Communication time: 1.214114 s.
+Computation time: 0.251471 s.
+------------------------------------
+
+
