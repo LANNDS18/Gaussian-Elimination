@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "mpi.h"
-#define MAX_MATRIX 2000
+#define MAX_MATRIX 1000
 
 int N = 10;
 int DEBUG = 0;
