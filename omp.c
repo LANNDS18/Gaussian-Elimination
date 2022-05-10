@@ -109,22 +109,23 @@ void generateMatrix() {
 }
 
 void displayMatrices() {
+    int i, j, k;
     printf("------------------------------------\n");
     printf("Show Matrix: A\n");
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
             printf("%f ", A[i][j]);
         }
         printf("\n");
     }
     printf("------------------------------------\n");
     printf("Show Matrix: B\n");
-    for (int i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {
         printf("%f\t", B[i]);
     }
     printf("\n------------------------------------\n");
     printf("Show Result: X\n");
-    for (int i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {
         printf("%f\t", X[i]);
     }
     printf("\n");
