@@ -111,7 +111,8 @@ void generateMatrix() {
 void forwardStep(int pivot, int current) {
     computationTime -= MPI_Wtime();
     float ratio = A[current][pivot] / A[pivot][pivot];
-    for (int k = pivot; k < N; k++)
+    int k;
+    for (k = pivot; k < N; k++)
     {
         A[current][k] -= A[pivot][k] * ratio;
     }
@@ -194,22 +195,23 @@ void forwardElimination(){
 
 void displayMatrices() {
     if (rank == 0 && DEBUG) {
+        int i, j;
         printf("------------------------------------\n");
         printf("Show Matrix: A\n");
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
+        for (i = 0; i < N; i++) {
+            for (j = 0; j < N; j++) {
                 printf("%f ", A[i][j]);
             }
             printf("\n");
         }
         printf("------------------------------------\n");
         printf("Show Matrix: B\n");
-        for (int i = 0; i < N; i++) {
+        for (i = 0; i < N; i++) {
             printf("%f\t", B[i]);
         }
         printf("\n------------------------------------\n");
         printf("Show Result: X\n");
-        for (int i = 0; i < N; i++) {
+        for (i = 0; i < N; i++) {
             printf("%f\t", X[i]);
         }
         printf("\n");
